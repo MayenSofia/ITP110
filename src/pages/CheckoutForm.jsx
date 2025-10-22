@@ -4,7 +4,8 @@ import { useCart } from "../context/CartContext";
 
 export default function CheckoutForm() {
   const navigate = useNavigate();
-  const { clearCart } = useCart();
+  // 👇 FIX IS HERE: Added 'cart'
+  const { clearCart, cart } = useCart();
 
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -74,12 +75,14 @@ export default function CheckoutForm() {
       province: deliveryType === 'delivery' ? province : '',
       zipCode: deliveryType === 'delivery' ? zipCode : '',
       paymentMethod,
+      // 👇 This line (77) will now work
       items: cart.map(item => ({
         name: item.name,
         price: item.price,
         image: item.image,
         quantity: item.quantity
       })),
+      // 👇 This line (83) will now work
       total: cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
     };
 
